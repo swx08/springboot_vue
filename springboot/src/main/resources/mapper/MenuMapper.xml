@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.mapper.MenuMapper">
+    <!--查询全部用户数据    List<Menu> getMenu();-->
+    <select id="getMenu" resultType="com.springboot.entity.Menu">
+        select *from sys_menu
+    </select>
+
+    <!--根据id查询用户数据    Menu findById(Integer id);-->
+    <select id="findById" resultType="com.springboot.entity.Menu">
+        select *from sys_menu
+        where id = #{id}
+    </select>
+
+    <!--新增用户数据    Integer insert(Menu menu);-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into
+        sys_menu(name,path,icon,description,pid)
+        values (#{name},#{path},#{icon},#{description},#{pid})
+    </insert>
+
+    <!--修改用户数据    Integer update(Role role);-->
+    <update id="update">
+        update sys_menu
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="path != null">
+                path = #{path},
+            </if>
+            <if test="icon != null">
+                icon = #{icon},
+            </if>
+            <if test="description != null">
+                description = #{description}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <!--根据用户id删除数据    Integer delete(Integer id);-->
+    <delete id="delete">
+        delete from sys_menu where id = #{id}
+    </delete>
+
+    <!--查询总记录数    Integer count(String name);-->
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from sys_menu where name like #{name}
+    </select>
+
+    <!--分页查询用户数据    List<Role> selectPage(Integer pageNum,Integer pageSize,String name);-->
+    <select id="selectPage" resultType="com.springboot.entity.Menu">
+        select *from sys_menu where name like #{name} ORDER BY id DESC limit #{pageNum},#{pageSize}
+    </select>
+
+    <!--批量删除 Integer deleteByBatch(int[] ids);-->
+    <delete id="deleteByBatch">
+        delete from sys_menu
+        where id in
+        <foreach collection="array" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--通过username查询用户数据    Role findByName(String name);-->
+    <select id="findByName" resultType="com.springboot.entity.Menu">
+        select *from sys_menu
+        where name=#{name}
+    </select>
+</mapper>
